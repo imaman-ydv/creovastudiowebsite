@@ -1,0 +1,4 @@
+User-agent: HTTrack
+Disallow: /
+User-agent: *
+Disallow: /
