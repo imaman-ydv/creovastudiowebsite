@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YDV Real Estate - Transforming Skylines | By Creova Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d; /* Deep Charcoal Background */
+            color: #e5e5e5; /* Light text */
+            transition: background-color 0.3s ease;
+        }
+        .luxury-gradient-text {
+            /* Gold/Bronze Gradient Accent */
+            background: linear-gradient(90deg, #ffd700, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-link {
+            transition: color 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+        .nav-link:hover {
+            color: #ffd700;
+        }
+        /* Desktop active link */
+        #desktop-nav .active-link {
+            border-bottom: 2px solid #ffd700;
+            color: #ffd700;
+        }
+        /* Mobile active link */
+        #mobile-menu .active-link {
+            background-color: #1a1a1a; /* Darker background for active mobile link */
+            color: #ffd700;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.1);
+        }
+        .sketchfab-embed-wrapper {
+            position: relative;
+            height: 600px; /* Fixed height for 3D viewer */
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .sketchfab-embed-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .tab-button {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-button.active-tab {
+            background-color: #ffd700;
+            color: #1f2937;
+            font-weight: 600;
+        }
+        
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Global Variables and Navigation Script -->
+    <script>
+        // Pages Mapping (Used for internal reference, links use direct IDs)
+        const pages = {
+            'home': 'Home',
+            'about': 'About Us',
+            'projects': 'Upcoming Projects',
+            'tours': 'Virtual Tours',
+            'contact': 'Contact Us'
+        };
+
+        const pageUrls = {
+            'home': 'home-section',
+            'about': 'about-section',
+            'projects': 'projects-section',
+            'tours': 'tours-section',
+            'contact': 'contact-section'
+        };
+
+        // Function to switch pages
+        function navigateTo(pageId) {
+            // 1. Hide all main sections
+            Object.values(pageUrls).forEach(sectionId => {
+                document.getElementById(sectionId).classList.add('hidden');
+            });
+            // 2. Show the requested section
+            document.getElementById(pageUrls[pageId]).classList.remove('hidden');
+
+            // 3. Update active link in navigation (for both desktop and mobile)
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active-link');
+            });
+
+            // Activate desktop link (if it exists)
+            const desktopLink = document.getElementById(`link-desktop-${pageId}`);
+            if (desktopLink) {
+                desktopLink.classList.add('active-link');
+            }
+
+            // Activate mobile link (if it exists)
+            const mobileLink = document.getElementById(`link-mobile-${pageId}`);
+            if (mobileLink) {
+                mobileLink.classList.add('active-link');
+            }
+
+            // 4. Set default tab for Virtual Tours if navigated there
+            if (pageId === 'tours') {
+                showTourCategory('residential');
+            }
+        }
+
+        // Function to toggle the mobile menu and swap icons
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            const isHidden = mobileMenu.classList.contains('hidden');
+
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        }
+        
+        // Combined navigation and close function for mobile
+        function navigateToAndClose(pageId) {
+            navigateTo(pageId);
+            // Close the menu after navigation
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+        }
+
+
+        // Function to switch tabs in Virtual Tours section
+        function showTourCategory(categoryId) {
+            // Hide all content areas
+            document.querySelectorAll('.tour-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            // Show the selected content area
+            document.getElementById(`tour-${categoryId}`).classList.remove('hidden');
+
+            // Update active tab button styling
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active-tab');
+            });
+            document.getElementById(`button-${categoryId}`).classList.add('active-tab');
+        }
+
+        // Initial load to show Home page
+        document.addEventListener('DOMContentLoaded', () => {
+            navigateTo('home');
+        });
+    </script>
+
+    <!-- Header / Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-[#0d0d0d] bg-opacity-95 shadow-lg border-b border-[#2a2a2a]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo/Company Name -->
+            <div class="text-3xl font-extrabold tracking-tight">
+                <span class="luxury-gradient-text">YDV</span> <span class="text-white">Real Estate</span>
+            </div>
+            
+            <!-- Navigation Links (Desktop) -->
+            <nav id="desktop-nav" class="hidden md:flex space-x-8 text-lg font-medium">
+                <a id="link-desktop-home" class="nav-link" onclick="navigateTo('home')">Home</a>
+                <a id="link-desktop-about" class="nav-link" onclick="navigateTo('about')">About Us</a>
+                <a id="link-desktop-projects" class="nav-link" onclick="navigateTo('projects')">Projects</a>
+                <a id="link-desktop-tours" class="nav-link" onclick="navigateTo('tours')">Virtual Tours</a>
+                <a id="link-desktop-contact" class="nav-link" onclick="navigateTo('contact')">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button class="md:hidden text-white p-2 rounded-md hover:bg-[#1a1a1a] transition" onclick="toggleMobileMenu()">
+                <!-- Hamburger Icon -->
+                <svg id="menu-icon" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+                <!-- Close Icon -->
+                <svg id="close-icon" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Initially Hidden) -->
+        <nav id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 border-t border-[#2a2a2a] text-lg font-medium">
+            <a id="link-mobile-home" class="nav-link block px-3 py-2 rounded-lg hover:bg-[#1a1a1a]" onclick="navigateToAndClose('home')">Home</a>
+            <a id="link-mobile-about" class="nav-link block px-3 py-2 rounded-lg hover:bg-[#1a1a1a]" onclick="navigateToAndClose('about')">About Us</a>
+            <a id="link-mobile-projects" class="nav-link block px-3 py-2 rounded-lg hover:bg-[#1a1a1a]" onclick="navigateToAndClose('projects')">Projects</a>
+            <a id="link-mobile-tours" class="nav-link block px-3 py-2 rounded-lg hover:bg-[#1a1a1a]" onclick="navigateToAndClose('tours')">Virtual Tours</a>
+            <a id="link-mobile-contact" class="nav-link block px-3 py-2 rounded-lg hover:bg-[#1a1a1a]" onclick="navigateToAndClose('contact')">Contact</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- 1. HOME SECTION -->
+        <section id="home-section" class="min-h-[80vh] flex items-center justify-center text-center">
+            <div class="space-y-8">
+                <p class="text-xl text-gray-400 font-medium">Presenting Luxury, Delivered by Creova Studio</p>
+                <h1 class="text-6xl sm:text-7xl lg:text-8xl font-black leading-tight tracking-tighter">
+                    <span class="luxury-gradient-text">Future</span> <span class="text-white">of Living,</span> <br class="hidden sm:block"> Built <span class="luxury-gradient-text">Today.</span>
+                </h1>
+                <p class="text-2xl text-gray-300 max-w-4xl mx-auto">
+                    YDV Real Estate is committed to developing the world's most significant and luxurious projects. We don't just build structures; we forge legacies.
+                </p>
+                <button onclick="navigateTo('tours')" class="mt-8 px-10 py-4 bg-[#ffd700] text-[#1f2937] text-xl font-bold rounded-full hover:bg-yellow-400 transition transform hover:scale-105 shadow-xl shadow-yellow-800/50">
+                    Explore 3D Virtual Tours
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT US SECTION (Initially Hidden) -->
+        <section id="about-section" class="hidden py-16">
+            <h2 class="text-5xl font-extrabold mb-10 border-b pb-4 border-[#2a2a2a]">
+                Our <span class="luxury-gradient-text">Identity</span>
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h3 class="text-3xl font-semibold mb-4 text-white">Vision & Legacy</h3>
+                    <p class="text-gray-300 mb-6 text-lg">
+                        YDV Real Estate is built not merely on brick and mortar, but on a legacy founded on trust, innovation, and unparalleled quality. Our mission is to redefine global real estate standards and offer our clients not just a home, but an exclusive lifestyle.
+                    </p>
+                    <p class="text-gray-300 text-lg">
+                        Every property we develop is crafted with a focus on future-proof design and sustainable practices. With us, you don't just invest; you secure a magnificent future.
+                    </p>
+                </div>
+                <div class="bg-[#1a1a1a] p-8 rounded-xl shadow-2xl space-y-4">
+                    <h3 class="text-2xl font-semibold luxury-gradient-text border-b pb-2 mb-4 border-[#3a3a3a]">Why Choose YDV?</h3>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-center"><span class="text-[#ffd700] text-2xl mr-3">&starf;</span> Global Design Standards</li>
+                        <li class="flex items-center"><span class="text-[#ffd700] text-2xl mr-3">&starf;</span> Cutting-Edge 3D Technology Integration</li>
+                        <li class="flex items-center"><span class="text-[#ffd700] text-2xl mr-3">&starf;</span> Unmatched Client Service</li>
+                        <li class="flex items-center"><span class="text-[#ffd700] text-2xl mr-3">&starf;</span> Sustainable & Smart Buildings</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. UPCOMING/CURRENT PROJECTS SECTION (Initially Hidden) -->
+        <section id="projects-section" class="hidden py-16">
+            <h2 class="text-5xl font-extrabold mb-10 border-b pb-4 border-[#2a2a2a]">
+                Our <span class="luxury-gradient-text">Mega Projects</span>
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project Card 1: The Leela Residences (Current) -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-xl card-hover transform transition duration-300">
+                    <h3 class="text-3xl font-bold luxury-gradient-text mb-2">The Leela Residences</h3>
+                    <p class="text-gray-400 mb-4">Current Project | Completion 2026</p>
+                    <p class="text-gray-300">City's tallest residential tower, offering exclusive 3 & 5 BHK sky-villas with unrivaled views and amenities. (3BHK tour available in the Virtual Tours section.)</p>
+                    <p class="text-sm mt-4 text-[#ffd700]">Location: Downtown Metropolis</p>
+                </div>
+                
+                <!-- Project Card 2: YDV Corporate Park (Upcoming) -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-xl card-hover transform transition duration-300">
+                    <h3 class="text-3xl font-bold luxury-gradient-text mb-2">YDV Corporate Park</h3>
+                    <p class="text-gray-400 mb-4">Upcoming Project | Launch Q4 2026</p>
+                    <p class="text-gray-300">Asia's largest sustainable commercial hub, featuring state-of-the-art offices and business centers. (Building model viewable in the Virtual Tours section.)</p>
+                    <p class="text-sm mt-4 text-[#ffd700]">Location: Financial District</p>
+                </div>
+
+                <!-- Project Card 3: Grand Mall of YDV (Upcoming) -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-xl card-hover transform transition duration-300">
+                    <h3 class="text-3xl font-bold luxury-gradient-text mb-2">Grand Mall of YDV</h3>
+                    <p class="text-gray-400 mb-4">Upcoming Project | Launch Q1 2027</p>
+                    <p class="text-gray-300">An ultimate luxury retail destination, featuring the best global brands, fine dining, and entertainment. (Mall tour viewable in the Virtual Tours section.)</p>
+                    <p class="text-sm mt-4 text-[#ffd700]">Location: Central City</p>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- 4. VIRTUAL TOURS SECTION (Initially Hidden) -->
+        <section id="tours-section" class="hidden py-16">
+            <h2 class="text-5xl font-extrabold mb-10 border-b pb-4 border-[#2a2a2a]">
+                3D <span class="luxury-gradient-text">Virtual Tours</span>
+            </h2>
+
+            <!-- Tour Category Tabs -->
+            <div class="flex flex-wrap gap-4 mb-8">
+                <button id="button-residential" class="tab-button px-6 py-3 rounded-lg bg-[#2a2a2a] text-white" onclick="showTourCategory('residential')">
+                    Residential Flats (Rooms)
+                </button>
+                <button id="button-commercial" class="tab-button px-6 py-3 rounded-lg bg-[#2a2a2a] text-white" onclick="showTourCategory('commercial')">
+                    Commercial Buildings (Malls & Towers)
+                </button>
+            </div>
+
+            <!-- RESIDENTIAL CONTENT -->
+            <div id="tour-residential" class="tour-content space-y-12">
+                <h3 class="text-4xl font-bold mt-8 mb-6 luxury-gradient-text">Luxury Residential Flats</h3>
+
+                <!-- 3BHK (Leela - East 3BHK 2351 Sqft) -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-2xl">
+                    <h4 class="text-2xl font-semibold mb-3 text-white">Leela - East 3BHK (2351 Sqft)</h4>
+                    <p class="text-gray-400 mb-4">Explore the spacious and exquisitely designed 3BHK home.</p>
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Leela - East 3BHK 2351 Sqft" 
+                                frameborder="0" 
+                                allowfullscreen 
+                                mozallowfullscreen="true" 
+                                webkitallowfullscreen="true" 
+                                allow="autoplay; fullscreen; xr-spatial-tracking" 
+                                xr-spatial-tracking 
+                                execution-while-out-of-viewport 
+                                execution-while-not-rendered 
+                                web-share 
+                                src="https://sketchfab.com/models/63ad2490fee84eaa95de2e545f1f37ad/embed?ui_theme=dark">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- 3BHK (3bhk sttacking) -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-2xl">
+                    <h4 class="text-2xl font-semibold mb-3 text-white">Premium 3BHK Design (Stacking View)</h4>
+                    <p class="text-gray-400 mb-4">Another layout option for 3BHK, showing room stacking and flow.</p>
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="3bhk sttacking" 
+                                frameborder="0" 
+                                allowfullscreen 
+                                mozallowfullscreen="true" 
+                                webkitallowfullscreen="true" 
+                                allow="autoplay; fullscreen; xr-spatial-tracking" 
+                                xr-spatial-tracking 
+                                execution-while-out-of-viewport 
+                                execution-while-not-rendered 
+                                web-share 
+                                src="https://sketchfab.com/models/7a61ad88efaf4af9b613372f9613c808/embed">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- 5BHK (5BHK) -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-2xl">
+                    <h4 class="text-2xl font-semibold mb-3 text-white">Ultra Luxury 5BHK Villa Tour</h4>
+                    <p class="text-gray-400 mb-4">Experience the grandeur of our 5BHK floor plan.</p>
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="5BHK" 
+                                frameborder="0" 
+                                allowfullscreen 
+                                mozallowfullscreen="true" 
+                                webkitallowfullscreen="true" 
+                                allow="autoplay; fullscreen; xr-spatial-tracking" 
+                                xr-spatial-tracking 
+                                execution-while-out-of-viewport 
+                                execution-while-not-rendered 
+                                web-share 
+                                src="https://sketchfab.com/models/548b3a5b58324517b2f55743ba141266/embed">
+                        </iframe>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COMMERCIAL CONTENT (Initially Hidden) -->
+            <div id="tour-commercial" class="tour-content hidden space-y-12">
+                <h3 class="text-4xl font-bold mt-8 mb-6 luxury-gradient-text">Commercial Spaces & Towers</h3>
+
+                <!-- Low Poly Style Chicago Buildings -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-2xl">
+                    <h4 class="text-2xl font-semibold mb-3 text-white">YDV Corporate Towers (Concept View)</h4>
+                    <p class="text-gray-400 mb-4">Our vision for creating impressive, towering commercial districts.</p>
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Low Poly Style Chicago Buildings" 
+                                frameborder="0" 
+                                allowfullscreen 
+                                mozallowfullscreen="true" 
+                                webkitallowfullscreen="true" 
+                                allow="autoplay; fullscreen; xr-spatial-tracking" 
+                                xr-spatial-tracking 
+                                execution-while-out-of-viewport 
+                                execution-while-not-rendered 
+                                web-share 
+                                src="https://sketchfab.com/models/3268b7c236bb4587b688656a147c311d/embed">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Mall -->
+                <div class="bg-[#1a1a1a] p-6 rounded-xl shadow-2xl">
+                    <h4 class="text-2xl font-semibold mb-3 text-white">Grand Mall of YDV (Interior Concept)</h4>
+                    <p class="text-gray-400 mb-4">A glimpse into the vast and modern interior design of our upcoming luxury retail mall.</p>
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Mall" 
+                                frameborder="0" 
+                                allowfullscreen 
+                                mozallowfullscreen="true" 
+                                webkitallowfullscreen="true" 
+                                allow="autoplay; fullscreen; xr-spatial-tracking" 
+                                xr-spatial-tracking 
+                                execution-while-out-of-viewport 
+                                execution-while-not-rendered 
+                                web-share 
+                                src="https://sketchfab.com/models/53068925c4fa4fc18e5c3bb3936af27b/embed">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- 5. CONTACT US SECTION (Initially Hidden) -->
+        <section id="contact-section" class="hidden py-16">
+            <h2 class="text-5xl font-extrabold mb-10 border-b pb-4 border-[#2a2a2a]">
+                <span class="luxury-gradient-text">Connect</span> With Us
+            </h2>
+            <div class="max-w-3xl mx-auto bg-[#1a1a1a] p-10 rounded-xl shadow-2xl">
+                <p class="text-xl mb-6 text-gray-300">
+                    Please fill out the form below to inquire about your dream property or to schedule a personal meeting.
+                </p>
+                <form onsubmit="alert('Your message has been sent! We will contact you shortly. (No actual submission happens in this demo.)'); return false;" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-400 mb-2">Your Name</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg bg-[#0d0d0d] border border-[#3a3a3a] text-white focus:ring-[#ffd700] focus:border-[#ffd700]">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg bg-[#0d0d0d] border border-[#3a3a3a] text-white focus:ring-[#ffd700] focus:border-[#ffd700]">
+                    </div>
+                    <div>
+                        <label for="interest" class="block text-sm font-medium text-gray-400 mb-2">Which Project Are You Interested In?</label>
+                        <select id="interest" name="interest" class="w-full px-4 py-3 rounded-lg bg-[#0d0d0d] border border-[#3a3a3a] text-white focus:ring-[#ffd700] focus:border-[#ffd700]">
+                            <option value="general">General Inquiry</option>
+                            <option value="leela">The Leela Residences (3/5 BHK)</option>
+                            <option value="park">YDV Corporate Park</option>
+                            <option value="mall">Grand Mall of YDV</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-400 mb-2">Your Message</label>
+                        <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 rounded-lg bg-[#0d0d0d] border border-[#3a3a3a] text-white focus:ring-[#ffd700] focus:border-[#ffd700]"></textarea>
+                    </div>
+                    <button type="submit" class="w-full px-6 py-3 bg-[#ffd700] text-[#1f2937] text-xl font-bold rounded-lg hover:bg-yellow-400 transition transform hover:scale-[1.01] shadow-lg shadow-yellow-800/50">
+                        Send Inquiry
+                    </button>
+                </form>
+            </div>
+            <div class="mt-10 text-center text-gray-400">
+                <p>Corporate Office: 123, YDV Tower, Grand Boulevard</p>
+                <p>Phone: +91 98765 43210 | Email: invest@ydvrealestate.com</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1a1a] mt-12 py-6 border-t border-[#2a2a2a]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2025 YDV Real Estate. All Rights Reserved. | Designed & Developed by <span class="luxury-gradient-text font-semibold">Creova Studio</span></p>
+        </div>
+    </footer>
+
+</body>
+</html>
