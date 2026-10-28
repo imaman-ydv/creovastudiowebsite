@@ -1,0 +1,26 @@
+name: creova_frontend
+description: "Creova Studio website frontend"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/Logo.png
+  fonts:
+    - family: Bandit Condensed
+      fonts:
+        - asset: assets/fonts/Bandit-Condensed.otf

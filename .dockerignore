@@ -1,0 +1,7 @@
+.git
+.DS_Store
+.env
+project.txt
+README.md
+backend/
+frontend/

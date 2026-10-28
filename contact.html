@@ -863,64 +863,76 @@
         <div class="container">
           <div class="contact-container">
             <div class="contact-wrap">
-              <pre></pre>
-              <div class="contact-h__wrap"><a href="studiocreova@gmail.com" class="contact-h w-inline-block">
-                  <h2 data-heading-reveal="" class="heading-contact">studiocreova@gmail.com</h2>
-                </a></div>
-              <div class="contact-inner">
-                <div class="content-row sm--stack">
-                  <div class="content-col">
-                    <div class="flex-h gap--small a--top sm--stack">
-                      <div class="contact-col">
-                        <h3 class="eyebrow-r">[ Work with us ] </h3>
-                      </div>
-                      <div class="contact-col u--three-col">
-                        <p class="p-reg">We’re building a company for the modern age, rooted in flexibility, diversity,
-                          trust, and collaboration. We work on the fringe of where culture, tech and business collide,
-                          and where we believe the most generative ideas take shape. That’s our universe. If that feels
-                          like home and you&#x27;re excited about building the future of fan experience, we&#x27;d love
-                          to hear from you.<br />‍<br />Drop us a line at <a href="mailto:studiocreova@gmail.com"
-                            data-link-underline="visible" class="underline-link">studiocreova@gmail.com</a>!</p>
-                      </div>
+              <header class="contact-form__hero">
+                <h2 class="contact-form__title">Let’s make something great.</h2>
+              </header>
+              <div class="contact-form__layout">
+                <section class="contact-form__main" aria-labelledby="contact-form-heading">
+                  <h3 id="contact-form-heading" class="contact-form__section-title">[ Tell us about your project ]</h3>
+                  <p class="contact-form__intro">Share a few details and we’ll get back to you.</p>
+                  <form class="inquiry-form" id="contact-inquiry-form" novalidate>
+                    <div class="inquiry-form__row">
+                      <label for="inquiry-name">Name <span aria-hidden="true">*</span></label>
+                      <input id="inquiry-name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="Your name" required />
+                    </div>
+                    <div class="inquiry-form__row">
+                      <label for="inquiry-email">Email <span aria-hidden="true">*</span></label>
+                      <input id="inquiry-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@company.com" required />
+                    </div>
+                    <div class="inquiry-form__row">
+                      <label for="inquiry-company">Company / Brand</label>
+                      <input id="inquiry-company" name="company_brand" type="text" autocomplete="organization" maxlength="160" placeholder="Your company or brand name" />
+                    </div>
+                    <div class="inquiry-form__row">
+                      <label for="inquiry-project-type">Project type <span aria-hidden="true">*</span></label>
+                      <select id="inquiry-project-type" name="project_type" required>
+                        <option value="" selected disabled>Select project type</option>
+                        <option>Website</option><option>Branding</option><option>Social Media</option>
+                        <option>3D Design &amp; Motion</option><option>Films &amp; Ads</option>
+                        <option>Digital Marketing</option><option>Other</option>
+                      </select>
+                    </div>
+                    <div class="inquiry-form__row">
+                      <label for="inquiry-budget">Budget range</label>
+                      <select id="inquiry-budget" name="budget_range">
+                        <option value="" selected>Select budget range</option>
+                        <option>Under ₹25,000</option><option>₹25,000 – ₹50,000</option>
+                        <option>₹50,000 – ₹1,00,000</option><option>₹1,00,000 – ₹3,00,000</option>
+                        <option>₹3,00,000+</option><option>Let’s discuss</option>
+                      </select>
+                    </div>
+                    <div class="inquiry-form__details">
+                      <label for="inquiry-details">Tell us about your project <span aria-hidden="true">*</span></label>
+                      <textarea id="inquiry-details" name="details" rows="3" maxlength="5000" placeholder="What do you need, when do you need it, and are there any references we should see?" required></textarea>
+                    </div>
+                    <div class="inquiry-form__trap" aria-hidden="true">
+                      <label for="inquiry-website">Leave this field empty</label>
+                      <input id="inquiry-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+                    </div>
+                    <div class="inquiry-form__actions">
+                      <button class="inquiry-form__submit" type="submit"><span>Send inquiry</span><span aria-hidden="true">↗</span></button>
+                      <p class="inquiry-form__status" id="inquiry-form-status" role="status" aria-live="polite"></p>
+                    </div>
+                  </form>
+                </section>
+                <aside class="contact-form__aside" aria-label="Contact information">
+                  <div class="contact-form__aside-block">
+                    <p class="contact-form__eyebrow">[ Contact ]</p>
+                    <a class="contact-form__aside-link" href="mailto:studiocreova@gmail.com">studiocreova@gmail.com</a>
+                  </div>
+                  <div class="contact-form__aside-block">
+                    <p class="contact-form__eyebrow">[ Based in ]</p>
+                    <p class="contact-form__aside-link">Ludhiana • Jalandhar</p>
+                  </div>
+                  <div class="contact-form__aside-block">
+                    <p class="contact-form__eyebrow">[ Follow along ]</p>
+                    <div class="contact-form__socials">
+                      <a href="https://www.instagram.com/creova.studio/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+                      <a href="https://www.linkedin.com/company/creova-studio/posts/?feedView=all" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
                     </div>
                   </div>
-                  <div class="content-col">
-                    <div class="flex-h gap--small">
-                      <div class="contact-col"></div>
-                    </div>
-                    <div class="flex-h gap--small a--top">
-                      <div class="contact-col sm--hide"></div>
-                      <div class="contact-col u--two-col">
-                        <div class="flex-v gap--xl">
-                          <div class="flex-h a--top gap--s">
-                            <div class="contact-col u--two-col">
-                              <h3 class="eyebrow-r">[ Cities ] </h3>
-                            </div>
-                            <div class="contact-col u--two-col">
-                              <div class="flex-v gap--xxs">
-                                <p class="p-small u--weight-book u--transform-caps">Ludhiana</p>
-                                <p class="p-small u--weight-book u--transform-caps">Jalandhar</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="flex-h a--top gap--s">
-                            <div class="contact-col u--two-col">
-                              <h3 class="eyebrow-r">[ Socials ] </h3>
-                            </div>
-                            <div class="contact-col u--two-col">
-                              <div class="flex-v gap--xxs a--left">
-                                <a href="https://www.instagram.com/creova.studio/" target="_blank" rel="noopener noreferrer" class="p-small u--weight-book u--transform-caps">instagram</a>
-                                <a href="https://www.linkedin.com/company/creova-studio/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="p-small u--weight-book u--transform-caps">linkedin</a>
-                              </div>
-
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="contact-col sm--hide"></div>
-                    </div>
-                  </div>
-                </div>
+                </aside>
+              </div>
                 <div class="contact-inner__bottom">
                   <div data-menu-stagger="" class="nav-footer__links">
                     <a data-link-underline="hide" href="./policy.html" class="footer-link">Privacy Policy</a>
@@ -930,7 +942,6 @@
                   <p class="p-tiny o--80 u--transform-caps">Copyright © <span data-year="">2025</span> CreovaStudio |
                     All rights reserved</p>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -972,6 +983,7 @@
       }
     };
   </script>
+  <script src="./contact-form.js" defer></script>
 </body>
 
 
