@@ -4,7 +4,7 @@ Snapshot from repository audit on 2026-10-28. Statuses describe the current proj
 
 | Pattern | Status | Current evidence | Decision / trigger |
 |---|---|---|---|
-| Resource-oriented design | IMPROVE EXISTING | Django uses named resources for pages, projects, insights, services, settings, testimonials, FAQs, homepage section visibility, hero branding, and hero strips. Content writes are through Django admin. Contact creation is `POST /api/contact/`. | Keep the resource convention. The homepage now reads cards, section visibility, branding, and bounded strip content from shared resources; connect remaining static page content incrementally. |
+| Resource-oriented design | IMPROVE EXISTING | Django uses named resources for pages, projects, insights, services, settings, testimonials, FAQs, homepage section visibility, hero branding, and hero strips. Projects and insights now have published detail resources. Content writes are through Django admin. Contact creation is `POST /api/contact/`. | Keep the resource convention. Homepage, About, Work, project details, and insight articles use shared CMS resources and preserve their static markup as fallback. |
 | Pagination | DEFER FOR FUTURE | Collection GET endpoints return every published row in one response; there is no pagination contract. | Add deterministic, bounded pagination when content volume or payload size affects latency, memory, or page loading. Pick a strategy based on the consumer. |
 | Filtering and field selection | DEFER FOR FUTURE | No list query parameters, search, ordering controls, or field selection exist. ORM querysets use model defaults. | Add allowlisted filters/search/sort when a real listing UI requires them. Add field selection only if measured payload needs justify it. |
 | Idempotency | DEFER FOR FUTURE | Contact creation inserts one inquiry per request and has no idempotency key. There are no payment/order/job operations. | First disable repeat submission in the UI. Add atomic request idempotency if retries/double-submits must be guaranteed not to create duplicate inquiries. |
@@ -15,8 +15,8 @@ Snapshot from repository audit on 2026-10-28. Statuses describe the current proj
 
 ## Immediate priorities
 
-1. Keep original static routes and content as the live UI while dynamic integrations are introduced incrementally.
-2. The static contact form is wired to the inquiry resource with server-side body/content-type/field validation, a honeypot, and repeat-submit prevention. Before production, choose and configure deployment-appropriate rate limiting and reassess CSRF for both same-origin HTML and Flutter callers. Decide whether request idempotency is needed based on retry behavior.
+1. Keep original static routes and content as the live UI while dynamic integrations are introduced incrementally. Homepage, About, Work, Projects, and Insights now have admin-backed editable fields and retain static fallback markup.
+2. The static contact form is wired to the inquiry resource with server-side body/content-type/field validation, a honeypot, and repeat-submit prevention. Inquiry lead tracking and optional SMTP notifications are implemented; configure the SMTP app password and recipient in each environment. Before production, choose deployment-appropriate rate limiting and reassess CSRF for both same-origin HTML and Flutter callers. Decide whether request idempotency is needed based on retry behavior.
 3. Define a consistent API error/response contract and secure production settings before exposing the API beyond the local Docker stack.
 4. Add endpoint tests when implementation work changes API behavior; cover published-content filtering, validation/status codes, permissions, and regression compatibility.
 

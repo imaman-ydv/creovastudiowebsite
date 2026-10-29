@@ -43,3 +43,9 @@ Initial decisions recorded 2026-10-28. These preserve current local development 
 - **Decision:** Let authenticated staff upload JPG, PNG, or WebP homepage card images up to 8 MB. Validate the decoded image, store it in a persistent media volume, serve it publicly through Nginx, and do not create an anonymous upload endpoint.
 - **Reason:** Nontechnical editors need to replace card images without editing files or source code. These images are intended for public website display.
 - **Tradeoff:** Media volume backups are required. SVG/HTML uploads and private image workflows are not supported; add malware scanning if the upload risk or business needs change.
+
+## SD-008: Use Render Free only for a disposable test deployment
+
+- **Decision:** Deploy the site, Django backend, portfolio, and a free PostgreSQL database through `render.yaml` for temporary review only. Create the initial admin only from user-entered deployment secrets.
+- **Reason:** The team wants a hosted preview before selecting long-term hosting. Free hosting has sleeping services, ephemeral uploads, a 30-day database expiry, no shell access, and blocked SMTP ports.
+- **Tradeoff:** Keep no important inquiries or uploaded media only on this deployment; export them before migration. Ordinary SMTP email delivery is unavailable on Render Free.

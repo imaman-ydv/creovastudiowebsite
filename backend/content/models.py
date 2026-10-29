@@ -54,10 +54,18 @@ class PageSection(models.Model):
     ]
 
     page = models.ForeignKey(SitePage, related_name='sections', on_delete=models.CASCADE)
+    content_key = models.SlugField(max_length=80, blank=True, help_text='Editor-friendly slot name, such as about-heading or about-hero-image.')
     section_type = models.CharField(max_length=32, choices=SECTION_TYPES, default='text')
     heading = models.CharField(max_length=240, blank=True)
     body = models.TextField(blank=True)
-    image_url = models.URLField(max_length=500, blank=True)
+    image_url = models.CharField(max_length=500, blank=True, help_text='Optional image link or site path, such as /images/example.avif.')
+    image = models.ImageField(
+        upload_to='site/pages/', blank=True,
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'webp']), validate_image_size],
+        verbose_name='Uploaded image',
+        help_text='Upload a JPG, PNG, or WebP image (maximum 8 MB). Takes priority over the image link.',
+    )
+    image_alt = models.CharField(max_length=240, blank=True, verbose_name='Image description')
     link_text = models.CharField(max_length=100, blank=True)
     link_url = models.CharField(max_length=500, blank=True)
     data = models.JSONField(default=dict, blank=True, help_text='Extra editable fields for this section.')
@@ -78,7 +86,15 @@ class Project(models.Model):
     year = models.PositiveSmallIntegerField(null=True, blank=True)
     category = models.CharField(max_length=100, blank=True)
     summary = models.TextField(blank=True)
-    cover_image_url = models.URLField(max_length=500, blank=True)
+    cover_image_url = models.CharField(max_length=500, blank=True, help_text='Optional image link or site path. An uploaded image takes priority.')
+    cover_image = models.ImageField(
+        upload_to='site/projects/', blank=True,
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'webp']), validate_image_size],
+        verbose_name='Uploaded cover image',
+        help_text='Upload a JPG, PNG, or WebP image (maximum 8 MB). Takes priority over the image link.',
+    )
+    image_alt = models.CharField(max_length=240, blank=True, verbose_name='Image description')
+    body = models.TextField(blank=True, help_text='Optional full project story. Leave empty to keep the original static page content.')
     website_url = models.URLField(max_length=500, blank=True)
     featured = models.BooleanField(default=False)
     published = models.BooleanField(default=False)
@@ -91,6 +107,26 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='site/projects/gallery/',
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'webp']), validate_image_size],
+        help_text='Upload a JPG, PNG, or WebP image (maximum 8 MB).',
+    )
+    alt_text = models.CharField(max_length=240, blank=True, verbose_name='Image description')
+    caption = models.CharField(max_length=240, blank=True)
+    sort_order = models.PositiveIntegerField(default=0, verbose_name='Image position')
+
+    class Meta:
+        ordering = ['sort_order', 'id']
+        verbose_name = 'project image'
+        verbose_name_plural = 'project images'
+
+    def __str__(self):
+        return self.caption or f'{self.project.title} image'
 
 
 class Service(models.Model):
@@ -221,9 +257,16 @@ class SiteSectionVisibility(models.Model):
 
 class Insight(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
     excerpt = models.TextField(blank=True)
-    cover_image_url = models.URLField(max_length=500, blank=True)
+    cover_image_url = models.CharField(max_length=500, blank=True, help_text='Optional image link or site path. An uploaded image takes priority.')
+    cover_image = models.ImageField(
+        upload_to='site/insights/', blank=True,
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'webp']), validate_image_size],
+        verbose_name='Uploaded cover image',
+        help_text='Upload a JPG, PNG, or WebP image (maximum 8 MB). Takes priority over the image link.',
+    )
+    image_alt = models.CharField(max_length=240, blank=True, verbose_name='Image description')
     body = models.TextField(blank=True, help_text='Article content in Markdown or plain text.')
     published = models.BooleanField(default=False)
     published_at = models.DateTimeField(null=True, blank=True)
@@ -236,6 +279,26 @@ class Insight(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class InsightImage(models.Model):
+    insight = models.ForeignKey(Insight, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='site/insights/gallery/',
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png', 'webp']), validate_image_size],
+        help_text='Upload a JPG, PNG, or WebP image (maximum 8 MB).',
+    )
+    alt_text = models.CharField(max_length=240, blank=True, verbose_name='Image description')
+    caption = models.CharField(max_length=240, blank=True)
+    sort_order = models.PositiveIntegerField(default=0, verbose_name='Image position')
+
+    class Meta:
+        ordering = ['sort_order', 'id']
+        verbose_name = 'insight image'
+        verbose_name_plural = 'insight images'
+
+    def __str__(self):
+        return self.caption or f'{self.insight.title} image'
 
 
 class SiteSetting(models.Model):
@@ -286,6 +349,17 @@ class FAQItem(models.Model):
 
 
 class ContactInquiry(models.Model):
+    STATUS_NEW = 'new'
+    STATUS_IN_PROGRESS = 'in_progress'
+    STATUS_WON = 'won'
+    STATUS_LOST = 'lost'
+    STATUS_CHOICES = [
+        (STATUS_NEW, 'New'),
+        (STATUS_IN_PROGRESS, 'In progress'),
+        (STATUS_WON, 'Won'),
+        (STATUS_LOST, 'Lost'),
+    ]
+
     name = models.CharField(max_length=120)
     email = models.EmailField()
     company_brand = models.CharField(max_length=160, blank=True, verbose_name='Company / brand')
@@ -294,6 +368,10 @@ class ContactInquiry(models.Model):
     message = models.TextField(max_length=5000)
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False, verbose_name='Reviewed')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_NEW)
+    internal_notes = models.TextField(blank=True)
+    follow_up_at = models.DateField(null=True, blank=True, verbose_name='Follow-up date')
+    notification_sent = models.BooleanField(default=False, verbose_name='Notification accepted by SMTP')
 
     class Meta:
         ordering = ['-created_at']

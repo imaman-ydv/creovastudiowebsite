@@ -73,6 +73,51 @@
         }
     }
 
+    function updateAnimatedText(target, value) {
+        const lineWraps = target.querySelectorAll('.single-line-wrap');
+        const lines = target.querySelectorAll('.single-line');
+        if (!lines.length) {
+            target.textContent = value;
+            return;
+        }
+
+        lines[0].textContent = value;
+        lineWraps.forEach((wrap, index) => { wrap.hidden = index > 0; });
+        target.setAttribute('aria-label', value);
+    }
+
+    async function loadHomePageContent() {
+        try {
+            const response = await fetch('/api/pages/home/', { cache: 'no-store' });
+            if (!response.ok) return;
+            const page = await response.json();
+            (page.sections || []).forEach((section) => {
+                if (!section.key) return;
+                const target = document.querySelector(`[data-cms-key="${CSS.escape(section.key)}"]`);
+                if (!target) return;
+
+                if (target.matches('img') && section.image_url) {
+                    target.src = section.image_url;
+                    target.removeAttribute('srcset');
+                    target.removeAttribute('sizes');
+                    target.alt = section.image_alt || target.alt || '';
+                    return;
+                }
+
+                const text = section.heading || section.body;
+                if (text && text.trim()) updateAnimatedText(target, text);
+                if (target.matches('a') && section.link_url) target.href = safeLink(section.link_url);
+                if (target.matches('a') && section.link_text) {
+                    const label = target.querySelector('.h-reg, .h-xsmall, .h-small');
+                    if (label) label.textContent = section.link_text;
+                    target.setAttribute('aria-label', section.link_text);
+                }
+            });
+        } catch (_error) {
+            // Keep the original homepage copy and images if the CMS is unavailable.
+        }
+    }
+
     async function loadHeroBranding() {
         const logo = document.querySelector('[data-cms-hero-logo]');
         if (!logo) return;
@@ -340,6 +385,7 @@
 
     setupHeroPanels();
     loadHeroBranding();
+    loadHomePageContent();
     loadServices();
     loadSectionVisibility();
 }());

@@ -22,6 +22,7 @@ from .models import (
     SiteSetting,
     Testimonial,
 )
+from .notifications import notify_contact_inquiry
 
 
 def _section_data(section: PageSection):
@@ -29,7 +30,9 @@ def _section_data(section: PageSection):
         'type': section.section_type,
         'heading': section.heading,
         'body': section.body,
-        'image_url': section.image_url,
+        'key': section.content_key,
+        'image_url': section.image.url if section.image else _content_image_url(None, section.image_url),
+        'image_alt': section.image_alt,
         'link_text': section.link_text,
         'link_url': section.link_url,
         'data': section.data,
@@ -69,12 +72,35 @@ def project_list(request):
             'year': project.year,
             'category': project.category,
             'summary': project.summary,
-            'cover_image_url': project.cover_image_url,
+            'cover_image_url': _content_image_url(project.cover_image, project.cover_image_url),
+            'image_alt': project.image_alt,
             'website_url': project.website_url,
             'featured': project.featured,
         }
         for project in projects
     ]})
+
+
+@require_GET
+def project_detail(request, slug):
+    project = get_object_or_404(Project.objects.prefetch_related('images'), slug=slug, published=True)
+    return JsonResponse({
+        'id': project.pk,
+        'title': project.title,
+        'slug': project.slug,
+        'client': project.client,
+        'year': project.year,
+        'category': project.category,
+        'summary': project.summary,
+        'body': project.body,
+        'cover_image_url': _content_image_url(project.cover_image, project.cover_image_url),
+        'image_alt': project.image_alt,
+        'website_url': project.website_url,
+        'images': [
+            {'image_url': image.image.url, 'image_alt': image.alt_text, 'caption': image.caption}
+            for image in project.images.all()
+        ],
+    })
 
 
 @require_GET
@@ -86,12 +112,41 @@ def insight_list(request):
             'title': insight.title,
             'slug': insight.slug,
             'excerpt': insight.excerpt,
-            'cover_image_url': insight.cover_image_url,
+            'cover_image_url': _content_image_url(insight.cover_image, insight.cover_image_url),
+            'image_alt': insight.image_alt,
             'body': insight.body,
             'published_at': insight.published_at.isoformat() if insight.published_at else None,
         }
         for insight in insights
     ]})
+
+
+@require_GET
+def insight_detail(request, slug):
+    insight = get_object_or_404(Insight.objects.prefetch_related('images'), slug=slug, published=True)
+    return JsonResponse({
+        'id': insight.pk,
+        'title': insight.title,
+        'slug': insight.slug,
+        'excerpt': insight.excerpt,
+        'cover_image_url': _content_image_url(insight.cover_image, insight.cover_image_url),
+        'image_alt': insight.image_alt,
+        'body': insight.body,
+        'published_at': insight.published_at.isoformat() if insight.published_at else None,
+        'images': [
+            {'image_url': image.image.url, 'image_alt': image.alt_text, 'caption': image.caption}
+            for image in insight.images.all()
+        ],
+    })
+
+
+def _content_image_url(upload, fallback):
+    if upload:
+        return upload.url
+    fallback = fallback.strip()
+    if fallback.startswith(('https://', 'http://', '/')):
+        return fallback
+    return f'/{fallback.removeprefix("./")}' if fallback else ''
 
 
 @require_GET
@@ -238,4 +293,6 @@ def contact_inquiry(request):
         budget_range=budget_range,
         message=message,
     )
+    inquiry.notification_sent = notify_contact_inquiry(inquiry)
+    inquiry.save(update_fields=['notification_sent'])
     return JsonResponse({'ok': True, 'id': inquiry.pk}, status=201)

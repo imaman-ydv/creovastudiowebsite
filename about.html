@@ -32,9 +32,10 @@
   <meta content="summary_large_image" name="twitter:card" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <link href="./about.css" rel="stylesheet" type="text/css" />
+  <link href="./founder-portfolio-link.css" rel="stylesheet" type="text/css" />
   <link href="./svg/1.png" alt="Favicon for CreovaStudio" rel="shortcut icon" type="image/x-icon" />
   <link href="./svg/1.png" alt="Apple Touch Icon for CreovaStudio" rel="apple-touch-icon" />
-  <link href="https://www.creovastudio.in/about.html" rel="canonical" />
+  <link href="https://creovastudio.in/about.html" rel="canonical" />
   <style>
     html,
     body {
@@ -106,6 +107,9 @@
       display: none;
     }
   </style>
+  <meta property="og:url" content="https://creovastudio.in/about.html" />
+  <meta property="og:site_name" content="CreovaStudio" />
+  <meta property="og:image" content="https://creovastudio.in/images/Logo.avif" />
 </head>
 
 <body>
@@ -805,7 +809,7 @@
             <p data-nav-center="name">home</p>
           </div>
           <p class="nav-center__bracket right">]</p>
-        </div><button role="button" aria-label="menu toggle" data-nav-toggle="" data-letter-hover="link"
+        </div><a class="portfolio-nav-link" href="/portfolio/">Aman’s Portfolio <span aria-hidden="true">↗</span></a><button role="button" aria-label="menu toggle" data-nav-toggle="" data-letter-hover="link"
           class="nav-button">
           <div data-letter-hover="text">MENU</div>
         </button>
@@ -877,11 +881,11 @@
         </div>
       </div>
     </div>
-    <main data-barba-namespace="about" data-barba="container" class="main-w">
+    <main data-barba-namespace="about" data-barba="container" data-cms-page="about" class="main-w">
       <section class="section u--clip">
         <div class="container">
           <div class="full-height u--text-white">
-            <div data-parallax-target="" class="bg"><img
+            <div data-parallax-target="" class="bg"><img data-cms-key="about-hero-image"
                 src="https://cdn.prod.website-files.com/672b55ccbf7fbd0d806c8f7c/679513d3ddde9f4bb03d6b0e_About Hero.avif"
                 loading="eager" data-load-scale="" alt="A creative visual of CreovaStudio's team working together" />
             </div>
@@ -900,27 +904,32 @@
       <section class="section z--2">
         <div class="container u--rel">
           <div class="padding-top--xs">
-            <h1 data-heading-reveal="" class="heading-about">Crafting the Unforgettable</h1>
-            <h2 data-lines-reveal="" data-split="lines" class="about-intro">Your story, our creativity — together, we
+            <h1 data-heading-reveal="" class="heading-about" data-cms-key="about-heading">Crafting the Unforgettable</h1>
+            <h2 data-lines-reveal="" data-split="lines" class="about-intro" data-cms-key="about-tagline">Your story, our creativity — together, we
               make it unforgettable</h2>
           </div>
           <div class="v-200"></div>
           <div class="content-row padding-btm--xs sm--stack">
             <div class="content-col">
               <div class="u--ratio-70">
-                <div class="img-wrap"><img src="./svg/1.png" />
+                <div class="img-wrap"><img src="./svg/1.png" data-cms-key="about-studio-image" alt="Creova Studio" />
                 </div>
               </div>
             </div>
             <div class="content-col">
               <div class="about-sub">
-                <p class="p-reg u--weight-book">At Creova Studio, we go beyond traditional web development. We craft
+                <p class="p-reg u--weight-book" data-cms-key="about-intro">At Creova Studio, we go beyond traditional web development. We craft
                   immersive digital experiences by merging sleek, high-performance websites with breathtaking 3D visuals
                   and cinematic VFX. Every project is designed to not just look stunning but to feel alive — engaging
                   users, telling stories, and creating worlds they can truly step into. Whether it’s an interactive
                   e-commerce platform, a 3D product showcase, or a visual brand experience, our goal is simple: turn
                   imagination into reality and make your brand unforgettable.</p>
-                <p class="eyebrow-r u--weight-book">[ Crafting since 2024 ]</p>
+                <p class="eyebrow-r u--weight-book" data-cms-key="about-since">[ Crafting since 2024 ]</p>
+                <a class="founder-portfolio-link" href="./portfolio/">
+                  <span class="founder-portfolio-link__eyebrow">[ Founder portfolio ]</span>
+                  <span class="founder-portfolio-link__title">Meet Aman Yadav <span aria-hidden="true">↗</span></span>
+                  <span class="founder-portfolio-link__copy">Explore my work, experience, and technical profile.</span>
+                </a>
               </div>
             </div>
           </div>
@@ -929,7 +938,7 @@
       <section data-parallax-section="" class="section u--clip">
         <div class="container">
           <div class="full-height u--text-white">
-            <div class="bg"><img src="./images/Poster2.avif" />
+            <div class="bg"><img src="./images/Poster2.avif" data-cms-key="about-studio-banner" alt="Creova Studio" />
             </div>
             <div class="sticky-title">
               <div class="u--third">
@@ -954,7 +963,7 @@
             </div>
             <div class="content-col small">
               <div class="content-col__paragraph">
-                <p class="p-reg u--weight-book">Our approach is built on a foundation of creativity, strategy, and
+                <p class="p-reg u--weight-book" data-cms-key="about-approach">Our approach is built on a foundation of creativity, strategy, and
                   innovation. With a deep understanding of culture, design, and technology, we craft experiences that go
                   beyond aesthetics and deliver real impact. We combine artistic vision with strategic thinking to
                   design work that resonates, engages, and endures. By staying curious, experimenting boldly, and
@@ -969,31 +978,31 @@
           <div data-hover-lines="" class="how-item">
             <div class="how-nr">01</div>
             <div class="how-paragraph">
-              <p data-mobile-ignore="" data-split="lines" data-lines-hover="0.2" class="eyebrow-r">We believe every idea
+              <p data-cms-key="about-principle-1-body" data-mobile-ignore="" data-split="lines" data-lines-hover="0.2" class="eyebrow-r">We believe every idea
                 starts with a story. Our first step is always to understand you—your vision, your audience, and your
                 purpose. By listening closely, we ensure that what we create is not just beautiful, but deeply connected
                 to who you are.</p>
             </div>
-            <h4 class="h-large xs--xxlarge">Listen First, Create Later</h4>
+            <h4 data-cms-key="about-principle-1-title" class="h-large xs--xxlarge">Listen First, Create Later</h4>
           </div>
           <div data-hover-lines="" class="how-item">
             <div class="how-nr">02</div>
             <div class="how-paragraph">
-              <p data-mobile-ignore="" data-split="lines" data-lines-hover="0.2" class="eyebrow-r">At Creova Studio,
+              <p data-cms-key="about-principle-2-body" data-mobile-ignore="" data-split="lines" data-lines-hover="0.2" class="eyebrow-r">At Creova Studio,
                 creativity is never random. Every color, shape, and detail carries intent. Our approach blends artistry
                 with strategy, ensuring that the work is not only visually striking but also purposeful and impactful.
               </p>
             </div>
-            <h4 class="h-large xs--xxlarge">Design with Meaning</h4>
+            <h4 data-cms-key="about-principle-2-title" class="h-large xs--xxlarge">Design with Meaning</h4>
           </div>
           <div data-hover-lines="" class="how-item">
             <div class="how-nr">03</div>
             <div class="how-paragraph">
-              <p data-mobile-ignore="" data-split="lines" data-lines-hover="0.2" class="eyebrow-r">We push beyond trends
+              <p data-cms-key="about-principle-3-body" data-mobile-ignore="" data-split="lines" data-lines-hover="0.2" class="eyebrow-r">We push beyond trends
                 and comfort zones to craft designs that feel fresh, bold, and timeless. Experimentation fuels our
                 process, allowing us to deliver unique experiences that stand apart in a world full of sameness.</p>
             </div>
-            <h4 class="h-large xs--xxlarge">Innovation Beyond Boundaries</h4>
+            <h4 data-cms-key="about-principle-3-title" class="h-large xs--xxlarge">Innovation Beyond Boundaries</h4>
           </div>
         </div>
       </section>
@@ -1011,7 +1020,7 @@
                 <h3 class="h-small u--text-right">Psyche</h3>
               </div>
             </div>
-            <div class="bg"><img src="./images/Poster3.avif" />
+            <div class="bg"><img src="./images/Poster3.avif" data-cms-key="about-echo-banner" alt="Creative studio" />
             </div>
           </div>
         </div>
@@ -1021,11 +1030,11 @@
           <div class="v-150"></div>
           <div class="content-row sm--stack">
             <div class="content-col wide">
-              <p class="eyebrow-r u--weight-book">[ How we can help ]</p>
+              <p class="eyebrow-r u--weight-book" data-cms-key="about-help-heading">[ How we can help ]</p>
             </div>
             <div class="content-col small">
               <div class="content-col__paragraph">
-                <p class="p-reg u--weight-book">Solutions to problems come in different shapes and sizes. We don’t work
+                <p class="p-reg u--weight-book" data-cms-key="about-help-intro">Solutions to problems come in different shapes and sizes. We don’t work
                   one way; rather, we adapt to what’s needed. From creating original IP and shaping GTM strategy to
                   designing new products, building marketing moments, and launching strategic ventures, it’s all about
                   building with cultural and commercial intent.</p>
@@ -1038,7 +1047,7 @@
           <div class="h-line u--break"></div>
           <div class="service-item">
             <div class="service-item__link">
-              <h4 class="h-large xs--xlarge">Brand Identity &amp; Strategy</h4><button role="button"
+              <h4 data-cms-key="about-service-1-title" class="h-large xs--xlarge">Brand Identity &amp; Strategy</h4><button role="button"
                 aria-label="close menu" data-nav-toggle="" class="plus">
                 <div class="plus-lines">
                   <div class="nav-close__line horizontal small">
@@ -1053,7 +1062,7 @@
             <div class="service-item__content">
               <div class="service-item__padding sm--show top"></div>
               <div class="service-item__rich w-richtext">
-                <p>We start by defining who you are. From naming and logo design to positioning and brand voice, we
+                <p data-cms-key="about-service-1-body">We start by defining who you are. From naming and logo design to positioning and brand voice, we
                   craft an identity that reflects your vision and resonates with your audience. Every brand needs a
                   strong foundation, and we make sure yours stands out with clarity and purpose.</p>
                 <p>‍</p>
@@ -1073,7 +1082,7 @@
           <div class="h-line u--break"></div>
           <div class="service-item">
             <div class="service-item__link">
-              <h4 class="h-large xs--xlarge">Digital Presence &amp; Experiences</h4><button role="button"
+              <h4 data-cms-key="about-service-2-title" class="h-large xs--xlarge">Digital Presence &amp; Experiences</h4><button role="button"
                 aria-label="close menu" data-nav-toggle="" class="plus">
                 <div class="plus-lines">
                   <div class="nav-close__line horizontal small">
@@ -1088,7 +1097,7 @@
             <div class="service-item__content">
               <div class="service-item__padding sm--show top"></div>
               <div class="service-item__rich w-richtext">
-                <p>Your brand deserves to live where your audience is—online. We design and build websites, apps, and
+                <p data-cms-key="about-service-2-body">Your brand deserves to live where your audience is—online. We design and build websites, apps, and
                   digital experiences that are not only visually striking but also seamless, functional, and engaging.
                 </p>
                 <p>‍</p>
@@ -1107,7 +1116,7 @@
           <div class="h-line u--break"></div>
           <div class="service-item">
             <div class="service-item__link">
-              <h4 class="h-large xs--xlarge">Content Creation & Storytelling</h4><button role="button"
+              <h4 data-cms-key="about-service-3-title" class="h-large xs--xlarge">Content Creation & Storytelling</h4><button role="button"
                 aria-label="close menu" data-nav-toggle="" class="plus">
                 <div class="plus-lines">
                   <div class="nav-close__line horizontal small">
@@ -1122,7 +1131,7 @@
             <div class="service-item__content">
               <div class="service-item__padding sm--show top"></div>
               <div class="service-item__rich w-richtext">
-                <p>A brand is more than visuals—it’s the stories it tells. From high-quality photography and cinematic
+                <p data-cms-key="about-service-3-body">A brand is more than visuals—it’s the stories it tells. From high-quality photography and cinematic
                   videos to creative campaigns and social media themes, we create content that sparks conversations and
                   builds lasting connections with your audience.</p>
                 <p>‍</p>
@@ -1140,7 +1149,7 @@
           <div class="h-line u--break"></div>
           <div class="service-item">
             <div class="service-item__link">
-              <h4 class="h-large xs--xlarge">Growth & Market Activation</h4><button role="button"
+              <h4 data-cms-key="about-service-4-title" class="h-large xs--xlarge">Growth & Market Activation</h4><button role="button"
                 aria-label="close menu" data-nav-toggle="" class="plus">
                 <div class="plus-lines">
                   <div class="nav-close__line horizontal small">
@@ -1155,7 +1164,7 @@
             <div class="service-item__content">
               <div class="service-item__padding sm--show top"></div>
               <div class="service-item__rich w-richtext">
-                <p>Once the foundation is set, we help you scale. Whether it’s shaping go-to-market strategies,
+                <p data-cms-key="about-service-4-body">Once the foundation is set, we help you scale. Whether it’s shaping go-to-market strategies,
                   designing launch campaigns, or creating cultural moments, we ensure your brand grows with both
                   commercial impact and cultural relevance—taking you from zero to 100.</p>
                 <p>‍</p>
@@ -1176,7 +1185,7 @@
         <div class="container">
           <div class="full-height">
             <div class="quote-wrap">
-              <h3 class="h-quote">“We design with purpose—setting new standards for creativity, building meaningful
+              <h3 data-cms-key="about-quote" class="h-quote">“We design with purpose—setting new standards for creativity, building meaningful
                 connections, and driving measurable impact for brands and their audiences.
                 ”</h3>
             </div>
@@ -1375,6 +1384,7 @@
       }
     };
   </script>
+  <script src="/content-cms.js"></script>
 </body>
 
 

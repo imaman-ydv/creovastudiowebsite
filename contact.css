@@ -3844,6 +3844,7 @@ figcaption {
     }
 }
 
+
 .visual-col.wide {
     width: calc(2*var(--pattern-col-width));
     flex: none
@@ -7236,5 +7237,127 @@ figcaption {
 @media (prefers-reduced-motion: reduce) {
     .home-hero .visual-col__flip {
         transition-duration: 1ms;
+    }
+}
+
+/* Small-screen layout corrections for the contact form and homepage service cards. */
+@media (max-width: 767px) {
+    .contact-form__layout,
+    .contact-form__main,
+    .contact-form__aside {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .contact-form__title {
+        font-size: clamp(2.65rem, 14vw, 5.5rem);
+        line-height: .86;
+    }
+
+    .inquiry-form__row {
+        padding: .55rem 0 .3rem;
+    }
+
+    .inquiry-form input,
+    .inquiry-form select {
+        height: 2.5rem;
+    }
+
+    .inquiry-form textarea {
+        min-height: 5rem;
+    }
+
+    .contact-form__aside-link {
+        font-size: clamp(1.7rem, 8vw, 2.75rem);
+    }
+
+    .contact-wrap:has(.contact-form__hero) .contact-inner__bottom {
+        width: 100%;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .contact-wrap:has(.contact-form__hero) .nav-footer__links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem 1rem;
+    }
+
+    [data-cms-services-slider] > .w-dyn-list {
+        max-width: 100vw;
+    }
+
+    [data-cms-services-slider] .article-slide__wrap {
+        width: min(88vw, 32rem);
+        min-width: 0;
+        min-height: clamp(30rem, 74svh, 40rem);
+    }
+
+    [data-cms-services-slider] .article-slide {
+        box-sizing: border-box;
+        gap: clamp(.9rem, 3vw, 1.35rem);
+        padding: var(--gap-s);
+    }
+
+    [data-cms-services-slider] .article-slide__content {
+        width: 100%;
+        min-width: 0;
+        gap: .8rem;
+    }
+
+    [data-cms-services-slider] .article-slide .h-xlarge {
+        font-size: clamp(3rem, 13vw, 4.75rem);
+        line-height: .82;
+        overflow-wrap: anywhere;
+    }
+
+    [data-cms-services-slider] .article-slide h3,
+    [data-cms-services-slider] .article-slide p {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    [data-cms-services-slider] .article-slide__bottom {
+        width: 100%;
+        max-height: none;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: .75rem;
+    }
+
+    [data-cms-services-slider] .article-slide__img {
+        width: clamp(8rem, 43vw, 10.5rem);
+        height: auto;
+        max-height: min(15rem, 38vh);
+        flex: 0 1 auto;
+    }
+
+    [data-cms-services-slider] .article-slide__bottom > p,
+    [data-cms-services-slider] .article-slide__bottom .single-line-wrap {
+        flex: 0 0 auto;
+        font-size: .85rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .contact-form__title {
+        font-size: clamp(2.5rem, 13vw, 3.25rem);
+    }
+
+    .contact-form__aside-link {
+        font-size: 1.65rem;
+    }
+
+    [data-cms-services-slider] .article-slide__wrap {
+        width: 90vw;
+        min-height: 28rem;
+    }
+
+    [data-cms-services-slider] .article-slide .h-xlarge {
+        font-size: clamp(2.7rem, 12vw, 3.25rem);
+    }
+
+    [data-cms-services-slider] .article-slide__img {
+        width: 8rem;
     }
 }

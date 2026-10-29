@@ -42,7 +42,7 @@ Decisions recorded during the initial project audit on 2026-10-28.
 
 - **Decision:** Use the existing `Service` content resource for homepage cards and a small visibility model for preconfigured homepage sections. Editors upload card images through authenticated Django admin; Nginx serves those files from a persistent media volume.
 - **Context:** The homepage slider was hard-coded in HTML, while the Django API/admin and contact inquiry log already existed. Nontechnical editors need clear title/text/image/publish/order fields and simple show/hide controls.
-- **Tradeoff:** The homepage cards and listed sections are connected now; other static page copy and imagery remain static until connected incrementally. API failure keeps the original static homepage visible.
+- **Tradeoff:** The homepage cards, hero/intro/latest-work copy and images, named sections, logo, and hero strips are editable now. API failure keeps the original static homepage visible.
 
 ## AD-008: Manage the homepage hero strips as a bounded shared resource
 
@@ -55,3 +55,15 @@ Decisions recorded during the initial project audit on 2026-10-28.
 - **Decision:** Expand the existing contact page and `ContactInquiry` record to capture company/brand, project type, budget range, and project details. Keep the page in the original static HTML/CSS/JavaScript, preserve the visual system, and send submissions to the shared Django endpoint for review in authenticated admin.
 - **Context:** The studio needs a usable creative brief form while preserving the existing website UI and keeping inquiry records in one database. The reference uses a high-contrast condensed heading, ruled form fields, and a separate contact information column.
 - **Tradeoff:** The project metadata fields are optional at the API level to keep the existing Flutter `name`/`email`/`message` contract compatible, while the website form requires the intended brief fields. The anonymous endpoint still needs deployment-specific rate limiting and a CSRF review before production exposure.
+
+## AD-010: Track and notify the team about new inquiries
+
+- **Decision:** Add lead status, internal notes, follow-up date, and SMTP-accepted indicator to contact inquiries in Django Admin. Send a plain-text email to an environment-configured team inbox when SMTP host, account credentials, and recipient are configured.
+- **Context:** The studio wants the team to notice new leads quickly and manage their follow-up without adding a separate CRM. Submission persistence remains the source of truth if SMTP is unavailable.
+- **Tradeoff:** SMTP secrets must be configured privately in local `.env` or deployment secrets. Email is synchronous and best-effort; failures are logged without making a successful inquiry submission appear failed.
+
+## AD-011: Preserve static page markup while CMS fields progressively override content
+
+- **Decision:** Keep the original About, Work, project detail, and insight article HTML/CSS/animation as the UI baseline. Django admin edits approved text and image fields; public pages replace only those values when published CMS data exists.
+- **Context:** These pages use carefully styled, interactive page-specific markup. Replacing complete pages with generic CMS rendering risks breaking layout, motion, and legacy routes.
+- **Tradeoff:** New page sections and designs still need deliberate frontend integration. Empty/unavailable CMS fields leave static content in place. Uploaded images are public and stored on the existing persistent media volume.
