@@ -2907,6 +2907,32 @@ figcaption {
     height: auto
 }
 
+.nav-logo__wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+}
+
+.nav-brand-lockup {
+    display: grid;
+    gap: .15rem;
+    color: currentColor;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.nav-brand-lockup strong {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+}
+
+.nav-brand-lockup small {
+    font-family: "Messina Sans Mono", monospace;
+    font-size: .5rem;
+    letter-spacing: .12em;
+}
+
 .nav-button {
     margin: -.5em;
     padding: .5em;
@@ -3119,7 +3145,9 @@ figcaption {
 }
 
 .home-hero__visual > [data-cms-hero-logo] {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     z-index: 3;
     width: min(92%, var(--cms-hero-logo-size, 86%));
     height: min(92%, var(--cms-hero-logo-size, 86%)) !important;
@@ -3128,8 +3156,10 @@ figcaption {
     object-position: center center !important;
     mix-blend-mode: screen;
     display: block;
-    place-self: center;
-    will-change: transform;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translate(-50%, -50%) !important;
+    will-change: auto;
 }
 
 .home-hero__heading {
@@ -3841,6 +3871,86 @@ figcaption {
 @media (prefers-reduced-motion: reduce) {
     .visual-col__flip {
         transition-duration: 1ms;
+    }
+}
+
+/* A connected brand lockup makes the studio's role clear at a glance. */
+.nav-logo__wrap {
+    gap: clamp(.45rem, .8vw, .8rem);
+}
+
+.nav-brand-lockup strong {
+    font-size: clamp(.58rem, .72vw, .72rem);
+}
+
+.nav-brand-lockup small {
+    font-size: clamp(.42rem, .5vw, .5rem);
+}
+
+/* Keep service cards editorial, while bringing both navigation arrows into view. */
+@media (min-width: 768px) {
+    [data-cms-services-slider] .article-slide__wrap {
+        height: min(68svh, 46rem);
+        min-height: min(68svh, 46rem);
+    }
+
+    [data-cms-services-slider] .article-slide {
+        box-sizing: border-box;
+        min-height: 0;
+        gap: clamp(1rem, 1.8vw, 1.6rem);
+        padding: clamp(1.25rem, 2vw, 2rem);
+    }
+
+    [data-cms-services-slider] .article-slide .h-xlarge {
+        font-size: clamp(4.25rem, 6.4vw, 6.75rem);
+        line-height: .82;
+        overflow-wrap: anywhere;
+    }
+
+    [data-cms-services-slider] .article-slide h3 {
+        font-size: clamp(1.05rem, 1.35vw, 1.4rem);
+        line-height: 1.16;
+    }
+
+    [data-cms-services-slider] .article-slide .article-slide__content {
+        gap: clamp(.65rem, 1.15vw, 1rem);
+        min-width: 0;
+    }
+
+    [data-cms-services-slider] .article-slide__bottom {
+        width: 100%;
+        max-height: none;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
+    }
+
+    [data-cms-services-slider] .article-slide__img {
+        width: clamp(10rem, 15vw, 13rem);
+        height: clamp(12rem, 26svh, 16rem);
+        max-height: 26svh;
+        flex: 0 1 auto;
+    }
+
+    [data-cms-services-controls] .split-button {
+        height: clamp(4rem, 6svh, 5.25rem);
+    }
+}
+
+@media (max-width: 767px) {
+    [data-cms-services-slider] .article-slide__wrap {
+        height: auto;
+        min-height: clamp(33rem, 68svh, 42rem);
+    }
+
+    [data-cms-services-slider] .article-slide__img {
+        max-height: min(15rem, 30svh);
+    }
+}
+
+@media (max-width: 380px) {
+    [data-cms-services-slider] .article-slide__wrap {
+        min-height: 34rem;
     }
 }
 
@@ -7360,4 +7470,224 @@ figcaption {
     [data-cms-services-slider] .article-slide__img {
         width: 8rem;
     }
+}
+
+/* Creova color direction: warm editorial base, signal orange and cinematic jewel tones. */
+:root {
+    --color--light: #f2eee6;
+    --color--dark: #191816;
+    --creova-orange: #ff704f;
+    --creova-amber: #f0b94f;
+    --creova-cobalt: #4b5bd1;
+    --creova-violet: #8064bc;
+    --creova-teal: #4f9f98;
+}
+
+/* Keep the eleven-strip hero and its flip animation, but give each face more depth. */
+.home-hero .visual-col__front {
+    position: absolute;
+    inset: 0;
+    background-color: #050505;
+    background-image: linear-gradient(155deg, #101010, #030303 74%);
+}
+
+.home-hero .visual-col__front::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .42;
+    background: linear-gradient(128deg, rgb(255 255 255 / 18%), transparent 34% 68%, rgb(10 8 12 / 28%));
+    transition: opacity .45s ease;
+}
+
+.home-hero .visual-col--interactive:hover .visual-col__front::after,
+.home-hero .visual-col--interactive:focus-visible .visual-col__front::after {
+    opacity: .8;
+}
+
+/* Give existing project photography a richer, more tactile finish. */
+.home-case__item .bg img {
+    filter: saturate(1.12) contrast(1.025);
+    transition: filter .5s ease;
+}
+
+.home-case__item:hover .bg img,
+.home-case__item:focus-within .bg img {
+    filter: saturate(1.28) contrast(1.04);
+}
+
+/* A quiet colored stage keeps the client marquee legible while adding warmth. */
+.main-w [data-clients="section"] {
+    background-color: #171615;
+    background-image:
+        radial-gradient(ellipse at 12% 82%, rgb(255 112 79 / 22%), transparent 36%),
+        radial-gradient(ellipse at 86% 18%, rgb(75 91 209 / 24%), transparent 38%),
+        linear-gradient(125deg, #211b1c, #141516 54%, #1c1a22);
+}
+
+/* Color blocks in the existing service slider; CMS content and card order stay editable. */
+[data-cms-services-slider] .article-slide__wrap:nth-child(5n + 1) .article-slide {
+    background: linear-gradient(145deg, #f5d1c2, #f0b9a7);
+}
+
+[data-cms-services-slider] .article-slide__wrap:nth-child(5n + 2) .article-slide {
+    background: linear-gradient(145deg, #dce3ff, #c6d0f8);
+}
+
+[data-cms-services-slider] .article-slide__wrap:nth-child(5n + 3) .article-slide {
+    background: linear-gradient(145deg, #d8ece3, #b9d9cd);
+}
+
+[data-cms-services-slider] .article-slide__wrap:nth-child(5n + 4) .article-slide {
+    background: linear-gradient(145deg, #f5e6b7, #ead392);
+}
+
+[data-cms-services-slider] .article-slide__wrap:nth-child(5n) .article-slide {
+    background: linear-gradient(145deg, #e5daf3, #cfc0e7);
+}
+
+[data-cms-services-slider] .article-slide__wrap .article-slide:hover {
+    filter: saturate(1.08);
+}
+
+/* Compact service cards so the next/previous controls remain in the first view. */
+@media (min-width: 768px) {
+    [data-cms-services-slider] .article-slide__wrap {
+        height: min(42svh, 31rem);
+        min-height: min(42svh, 31rem);
+    }
+
+    [data-cms-services-slider] .article-slide {
+        gap: clamp(.8rem, 1.3vw, 1.2rem);
+        padding: clamp(.9rem, 1.25vw, 1.25rem);
+    }
+
+    [data-cms-services-slider] .article-slide .h-xlarge {
+        font-size: clamp(3.15rem, 4.5vw, 4.75rem);
+        line-height: .86;
+    }
+
+    [data-cms-services-slider] .article-slide h3 {
+        font-size: clamp(1.05rem, 1.25vw, 1.3rem);
+        line-height: 1.18;
+    }
+
+    [data-cms-services-slider] .article-slide .article-slide__content {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+        gap: clamp(.55rem, .9vw, .85rem);
+    }
+
+    [data-cms-services-slider] .article-slide .article-slide__content > h3,
+    [data-cms-services-slider] .article-slide .article-slide__content > p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    [data-cms-services-slider] .article-slide .article-slide__content > h3 {
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
+
+    [data-cms-services-slider] .article-slide .article-slide__content > p {
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+
+    [data-cms-services-slider] .article-slide__img {
+        width: clamp(8rem, 10vw, 9.5rem);
+        height: clamp(8rem, 14svh, 10rem);
+        max-height: 10rem;
+    }
+
+    [data-cms-services-controls] .split-button {
+        height: clamp(3.25rem, 4.5svh, 4rem);
+    }
+}
+
+@media (max-width: 767px) {
+    [data-cms-services-slider] .article-slide__wrap {
+        min-height: clamp(28rem, 62svh, 35rem);
+    }
+
+    [data-cms-services-slider] .article-slide .h-xlarge {
+        font-size: clamp(2.8rem, 11vw, 3.8rem);
+    }
+
+    [data-cms-services-slider] .article-slide__img {
+        height: 10rem;
+        max-height: 10rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-hero .visual-col__front::after,
+    .home-case__item .bg img {
+        transition-duration: 1ms;
+    }
+}
+
+/* Homepage motion stays progressive: content is visible before any JS runs. */
+.home-hero__heading.home-heading-ready {
+    animation: creova-heading-arrive 760ms cubic-bezier(.2, .72, .22, 1) both;
+}
+
+@keyframes creova-heading-arrive {
+    from {
+        transform: translate3d(0, .12em, 0);
+        filter: blur(3px);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+        filter: blur(0);
+    }
+}
+
+.home-hero__spotlight {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgb(255 112 79 / 24%), rgb(240 185 79 / 9%) 42%, transparent 76%);
+    mix-blend-mode: screen;
+    transition: opacity 260ms ease;
+}
+
+.home-hero__visual.has-pointer-spotlight .home-hero__spotlight {
+    opacity: 1;
+}
+
+.home-case__heading.is-inview {
+    animation: creova-work-title-arrive 700ms cubic-bezier(.2, .72, .22, 1) both;
+}
+
+.home-case__item.is-inview {
+    animation: creova-work-card-arrive 700ms cubic-bezier(.2, .72, .22, 1) both;
+}
+
+@keyframes creova-work-title-arrive {
+    from { filter: blur(3px); }
+    to { filter: blur(0); }
+}
+
+@keyframes creova-work-card-arrive {
+    from { filter: saturate(.82); }
+    to { filter: saturate(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-hero__heading.home-heading-ready,
+    .home-case__heading.is-inview,
+    .home-case__item.is-inview {
+        animation: none;
+    }
+
+    .home-hero__spotlight {
+        display: none;
+    }
+
 }

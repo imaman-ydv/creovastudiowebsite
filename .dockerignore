@@ -5,3 +5,7 @@ project.txt
 README.md
 backend/
 frontend/
+
+.playwright-cli/
+Portfolio-Website/
+node_modules/
