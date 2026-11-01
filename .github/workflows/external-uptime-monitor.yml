@@ -1,0 +1,90 @@
+name: External uptime monitor
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+
+concurrency:
+  group: external-uptime-monitor
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check public site and n8n health
+        id: probe
+        continue-on-error: true
+        shell: bash
+        run: |
+          failed=""
+          for entry in \
+            "Creova site|https://creovastudio.in/?monitor=${GITHUB_RUN_ID}" \
+            "n8n|https://n8n.creovastudio.in/healthz/readiness?monitor=${GITHUB_RUN_ID}"; do
+            name="${entry%%|*}"
+            url="${entry#*|}"
+            code="$(curl --location --silent --show-error --connect-timeout 10 --max-time 20 --output /dev/null --write-out '%{http_code}' "$url" || true)"
+            if [[ ! "$code" =~ ^2[0-9][0-9]$ ]]; then
+              failed+="${name} (${code:-no response}); "
+            fi
+          done
+          if [[ -n "$failed" ]]; then
+            echo "status=down" >> "$GITHUB_OUTPUT"
+            echo "failed=${failed}" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=up" >> "$GITHUB_OUTPUT"
+            echo "failed=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Read previous scheduled check
+        id: previous
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "conclusion=unknown" >> "$GITHUB_OUTPUT"
+          response="$(curl --fail --silent --show-error --retry 3 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/external-uptime-monitor.yml/runs?event=schedule&per_page=10")"
+          previous="$(jq -r --arg current "$GITHUB_RUN_ID" \
+            '[.workflow_runs[] | select((.id | tostring) != $current)][0].conclusion // "none"' \
+            <<< "$response")"
+          echo "conclusion=${previous}" >> "$GITHUB_OUTPUT"
+
+      - name: Send Telegram transition alert
+        if: always()
+        continue-on-error: true
+        shell: bash
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STATUS: ${{ steps.probe.outputs.status }}
+          FAILED_ENDPOINTS: ${{ steps.probe.outputs.failed }}
+          PREVIOUS: ${{ steps.previous.outputs.conclusion }}
+        run: |
+          message=""
+          if [[ "$STATUS" == "down" && "$PREVIOUS" != "failure" && "$PREVIOUS" != "unknown" ]]; then
+            message="⚠️ Server/site check failed: ${FAILED_ENDPOINTS}"
+          elif [[ "$STATUS" == "up" && "$PREVIOUS" == "failure" ]]; then
+            message="✅ Creova site and n8n are reachable again."
+          fi
+          [[ -z "$message" ]] && exit 0
+          : "${BOT_TOKEN:?Set TELEGRAM_BOT_TOKEN in GitHub Actions secrets}"
+          : "${CHAT_ID:?Set TELEGRAM_CHAT_ID in GitHub Actions secrets}"
+          curl --fail --silent --show-error --retry 2 \
+            "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${CHAT_ID}" \
+            --data-urlencode "text=${message}"
+
+      - name: Mark this run failed if an endpoint is down
+        if: always()
+        shell: bash
+        env:
+          STATUS: ${{ steps.probe.outputs.status }}
+        run: test "$STATUS" = up
